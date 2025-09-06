@@ -1,0 +1,26 @@
+# Simple Dockerfile for Slack MCP Server
+FROM python:3.11-slim
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y build-essential && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirements and install dependencies
+COPY pyproject.toml ./
+RUN pip install --upgrade pip
+RUN pip install -e .
+
+# Copy application code
+COPY src/ ./src/
+
+# Expose port
+EXPOSE 8000
+
+# Run the application
+CMD ["slack-mcp-server"]
