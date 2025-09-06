@@ -8,8 +8,8 @@ ENV PIP_NO_CACHE_DIR=1
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \\
-    build-essential \\
+RUN apt-get update && apt-get install -y \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 # Create and activate virtual environment
@@ -31,8 +31,8 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PATH="/opt/venv/bin:$PATH"
 
 # Install runtime dependencies
-RUN apt-get update && apt-get install -y \\
-    curl \\
+RUN apt-get update && apt-get install -y \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy virtual environment from builder stage
@@ -52,18 +52,18 @@ COPY pyproject.toml /app/
 RUN pip install -e .
 
 # Create directories for logs and data
-RUN mkdir -p /app/logs /app/data && \\
+RUN mkdir -p /app/logs /app/data && \
     chown -R slackmcp:slackmcp /app
 
 # Switch to non-root user
 USER slackmcp
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \\
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD python -c "import sys; sys.exit(0)"
 
 # Default command
-CMD ["slack-mcp-server"]
+CMD ["python", "-m", "slack_mcp.web_server"]
 
 # Expose port (for OAuth flow)
 EXPOSE 8000

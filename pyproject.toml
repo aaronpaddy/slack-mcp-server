@@ -6,7 +6,6 @@ build-backend = "hatchling.build"
 name = "slack-mcp-server"
 version = "0.1.0"
 description = "A Model Context Protocol (MCP) server for Slack integration"
-readme = "README.md"
 license = {text = "MIT"}
 authors = [
     {name = "Aaron Paddy", email = "aaron@example.com"},
